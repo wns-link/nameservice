@@ -61,7 +61,7 @@ func GetCmdNames(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		Short: "names",
 		// Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext.WithCodec(cdc)
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
 
 			res, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/names", queryRoute), nil)
 			if err != nil {
