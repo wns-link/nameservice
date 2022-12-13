@@ -89,14 +89,14 @@ func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFun
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Owner)
+		addr, err := sdk.AccAddressFromBech32(req.Buyer)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return 
 		}
 
 		// Create the message
-		msg := nameservice.NewMsgSetName(req.Name, req.Value, addr)
+		msg := nameservice.NewMsgSetName(req.Name, coins, addr)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
