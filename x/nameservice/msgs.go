@@ -61,18 +61,17 @@ type MsgBuyName struct {
 	Buyer sdk.AccAddress
 }
 
-
 // NewMsgBuyName is the constructor function for MsgBuyName
 func NewMsgBuyName(name string, bid sdk.Coins, buyer sdk.AccAddress) MsgBuyName {
 	return MsgBuyName{
-		Name: 	name,
-		Bid:  	bid,
-		buyer:	buyer
+		Name:  name,
+		Bid:   bid,
+		buyer: buyer,
 	}
 }
 
 // Route should return the name of the module
-func (msg MsgBuyName) Route() string { return "nameservice"}
+func (msg MsgBuyName) Route() string { return "nameservice" }
 
 // Type should return the action
 func (msg MsgBuyName) Type() string { return "buy_name" }

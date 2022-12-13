@@ -81,9 +81,9 @@ func (k Keeper) GetNameIterator(ctx sdk.Context) sdk.Iterator {
 
 // NewKeeper creates new instances of the nameservice Keeper
 func NewKeeper(coinKeeper bank.Keeper, storeKey sdk.StoreKey, cdc *codec.Codec) Keeper {
-	return Keeper {
+	return Keeper{
 		coinKeeper: coinKeeper,
-		storeKey: storeKey,
-		cdc: cdc
+		storeKey:   storeKey,
+		cdc:        cdc,
 	}
 }
