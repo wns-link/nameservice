@@ -19,9 +19,9 @@ func NewModuleClient(storeKey string, cdc *amino.Codec) ModuleClient {
 }
 
 // GetQueryCmd returns the cli query commands for this moduls
-func (mc ModuleClient) GetQueryCmd() *cdc.Command {
+func (mc ModuleClient) GetQueryCmd() *cobra.Command {
 	// Group nameservice queries under a subcommand
-	namesvcQueryCmd := &codra.Command{
+	namesvcQueryCmd := &cobra.Command{
 		Use:   "nameservice",
 		Short: "Querying commands for the nameservice module",
 	}

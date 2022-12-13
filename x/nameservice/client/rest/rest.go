@@ -21,12 +21,12 @@ const (
 // RegisterRoutes - Central function to define routes that get registered by the main application
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, cdc *codec.Codec, storeName string) {
 	r.HandleFunc(fmt.Sprintf("/%s/names", storeName), buyNameHandler(cdc, cliCtx)).Methods("POST")
-	r.HandleFunc(fmt.Sprintf("/%s/names", storeName), setNameHandler(cdc, cliCtx)).Methods("GET")
+	r.HandleFunc(fmt.Sprintf("/%s/names", storeName), setNameHandler(cdc, cliCtx)).Methods("PUT")
 	r.HandleFunc(fmt.Sprintf("/%s/names/{%s}", storeName, restName), resolveNameHandler(cdc, cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/names/{%s}/whois", storeName, restName), whoIsHandler(cdc, cliCtx, storeName)).Methods("GET")
 }
 
-func resolveNameHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandleFunc {
+func resolveNameHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		paramType := vars[restName]
@@ -41,7 +41,7 @@ func resolveNameHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName s
 	}
 }
 
-func whoIsHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandleFunc {
+func whoIsHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		paramType := vars[restName]
@@ -57,7 +57,7 @@ func whoIsHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string)
 }
 
 
-func namesHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandleFunc {
+func namesHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		res, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/names", storeName), nil)
 		if err != nil {
@@ -76,9 +76,9 @@ type buyNameReq struct {
 	Buyer   string 			`json:"buyer"`
 }
 
-func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandleFunc {
+func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req setNameReq
+		var req buyNameReq
 		if !rest.ReadRESTReq(w, r, cdc, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
 			return 
