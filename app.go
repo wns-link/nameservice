@@ -61,7 +61,7 @@ func NewNameServiceApp(logger log.Logger, db dbm.DB) *nameServiceApp {
 		keyNS:            sdk.NewKVStoreKey("ns"),
 		keyFeeCollection: sdk.NewKVStoreKey("fee_collection"),
 		keyParams:        sdk.NewKVStoreKey("params"),
-		tkeyParams:       sdk.NewKVStoreKey("transient_params"),
+		tkeyParams:       sdk.NewTransientStoreKey("transient_params"),
 	}
 
 	// The ParamsKeeper handles parameter storage for the application
@@ -137,7 +137,7 @@ type GenesisState struct {
 func (app *nameServiceApp) initChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	stateJSON := req.AppStateBytes
 
-	GenesisState := new(GenesisState)
+	genesisState := new(GenesisState)
 	err := app.cdc.UnmarshalJSON(stateJSON, genesisState)
 	if err != nil {
 		panic(err)
@@ -193,6 +193,6 @@ func MakeCodec() *codec.Codec {
 	nameservice.RegisterCodec(cdc)
 	staking.RegisterCodec(cdc)
 	sdk.RegisterCodec(cdc)
-	codec.RegisterCodec(cdc)
+	codec.RegisterCrypto(cdc)
 	return cdc
 }
