@@ -51,7 +51,7 @@ func main() {
 
 	rootCmd.AddCommand(InitCmd(ctx, cdc))
 	rootCmd.AddCommand(AddGenesisAccountCmd(ctx, cdc))
-	server.AddCommand(ctx, cdc, rootCmd, newApp, appExporter())
+	server.AddCommands(ctx, cdc, rootCmd, newApp, appExporter())
 
 	// perpare and add flags
 	executor := cli.PrepareBaseCmd(rootCmd, "NS", DefaultNodeHome)
@@ -144,7 +144,7 @@ func AddGenesisAccountCmd(ctx *server.Context, cdc *codec.Codec) *cobra.Command 
 		$ nsd add-genesis-account cosmos1tse7r2fadvlrrgau3pa0ss7cqh55wrv6y9alwh 1000STAKE,1000nametoken
 		`),
 		RunE: func(_ *cobra.Command, args []string) error {
-			add, err := sdk.AccAddressFromBech32(args[0])
+			addr, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
@@ -182,13 +182,13 @@ func AddGenesisAccountCmd(ctx *server.Context, cdc *codec.Codec) *cobra.Command 
 
 			acc := auth.NewBaseAccountWithAddress(addr)
 			acc.Coins = coins
-			appState.Accounts = append(appState.Account, &acc)
+			appState.Accounts = append(appState.Accounts, &acc)
 			appStateJSON, err := cdc.MarshalJSON(appState)
 			if err != nil {
 				return err
 			}
 
-			return gaiaInit.ExportGenesisFile(genFile, genDoc.chainID, genDoc.validators, appStateJSON)
+			return gaiaInit.ExportGenesisFile(genFile, genDoc.ChainID, genDoc.Validators, appStateJSON)
 		},
 	}
 
@@ -197,7 +197,7 @@ func AddGenesisAccountCmd(ctx *server.Context, cdc *codec.Codec) *cobra.Command 
 
 // SimpleAppGenTx returns a simple GenTx command that makes the node a valdiator from the start
 func SimpleAppGenTx(cdc *codec.Codec, pk crypto.PubKey) (
-	appGenTx, cliPrint json.RawMessage, valdiator tmtypes.GenesisValidator, err error) {
+	appGenTx, cliPrint json.RawMessage, validator tmtypes.GenesisValidator, err error) {
 
 	addr, secret, err := server.GenerateCoinKey()
 	if err != nil {
