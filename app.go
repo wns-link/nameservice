@@ -28,16 +28,16 @@ type nameServiceApp struct {
 	*bam.BaseApp
 	cdc *codec.Codec
 
-	keyMain          *sdk.KVstoreKey
-	keyAccount       *sdk.KVstoreKey
-	keyNS            *sdk.KVstoreKey
-	keyFeeCollection *sdk.KVstoreKey
-	keyParams        *sdk.KVstoreKey
-	tkeyParams       *sdk.KVstoreKey
+	keyMain          *sdk.KVStoreKey
+	keyAccount       *sdk.KVStoreKey
+	keyNS            *sdk.KVStoreKey
+	keyFeeCollection *sdk.KVStoreKey
+	keyParams        *sdk.KVStoreKey
+	tkeyParams       *sdk.KVStoreKey
 
-	accountKeeper       auth.accountKeeper
+	accountKeeper       auth.AccountKeeper
 	bankKeeper          bank.Keeper
-	feeCollectionKeeper auth.feeCollectionKeeper
+	feeCollectionKeeper auth.FeeCollectionKeeper
 	paramsKeeper        params.Keeper
 	nsKeeper            nameservice.Keeper
 }
@@ -49,7 +49,7 @@ func NewNameServiceApp(logger log.Logger, db dbm.DB) *nameServiceApp {
 	cdc := MakeCodec()
 
 	// BaseApp handles interactions with Tendermint through the ABCI protocol
-	bApp := bam.NewBaseApp(appName, logger, db, auth, DefaultTxDecoder(cdc))
+	bApp := bam.NewBaseApp(appName, logger, db, auth.DefaultTxDecoder(cdc))
 
 	// Here you initialize your application with the store keys it requires
 	var app = &nameServiceApp{
