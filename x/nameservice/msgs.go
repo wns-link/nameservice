@@ -66,7 +66,7 @@ func NewMsgBuyName(name string, bid sdk.Coins, buyer sdk.AccAddress) MsgBuyName 
 	return MsgBuyName{
 		Name:  name,
 		Bid:   bid,
-		buyer: buyer,
+		Buyer: buyer,
 	}
 }
 
