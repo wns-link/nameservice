@@ -7,7 +7,7 @@ import (
 )
 
 // NewHandler returns a handler for "nameservice" type message.
-func NewHandler(keeper keeper) sdk.Handler {
+func NewHandler(keeper Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		switch msg := msg.(type) {
 		case MsgSetName:

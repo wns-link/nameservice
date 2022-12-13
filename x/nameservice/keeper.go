@@ -13,7 +13,7 @@ type Keeper struct {
 
 	storeKey sdk.StoreKey // Unexposed key to access store from sdk.Context
 
-	cdc *codec.codec // The wire codec for binary encoding/decoding.
+	cdc *codec.Codec // The wire codec for binary encoding/decoding.
 }
 
 // Sets the entire Whois metadata struct for a name

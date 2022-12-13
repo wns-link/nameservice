@@ -10,3 +10,13 @@ type Whois struct {
 	Owner sdk.AccAddress `json:"owner"`
 	Price sdk.Coins      `json:"price"`
 }
+
+// Initial Starting Price for a name that was never previously owned
+var MinNamePrice = sdk.Coins{sdk.NewInt64Coin("nametoken", 1)}
+
+// Returns a new Whois with the minprice as the price
+func NewWhois() Whois {
+	return Whois{
+		Price: MinNamePrice,
+	}
+}
