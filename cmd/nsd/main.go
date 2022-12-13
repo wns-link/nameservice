@@ -170,7 +170,7 @@ func AddGenesisAccountCmd(ctx *server.Context, cdc *codec.Codec) *cobra.Command 
 			}
 
 			var appState app.GenesisState
-			if err = cdc.UnmarshalJSON(genDoc.appState, &appState); err != nil {
+			if err = cdc.UnmarshalJSON(genDoc.AppState, &appState); err != nil {
 				return err
 			}
 
