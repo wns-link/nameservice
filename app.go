@@ -33,7 +33,7 @@ type nameServiceApp struct {
 	keyNS            *sdk.KVStoreKey
 	keyFeeCollection *sdk.KVStoreKey
 	keyParams        *sdk.KVStoreKey
-	tkeyParams       *sdk.KVStoreKey
+	tkeyParams       *sdk.TransientStoreKey
 
 	accountKeeper       auth.AccountKeeper
 	bankKeeper          bank.Keeper
