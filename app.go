@@ -94,7 +94,7 @@ func NewNameServiceApp(logger log.Logger, db dbm.DB) *nameServiceApp {
 	)
 
 	// The AnteHandler handles signature verification and transaction pre-processing
-	app.SetAnteHanlder(auth.NewAnteHandler(app.accountKeeper, app.feeCollectionKeeper))
+	app.SetAnteHandler(auth.NewAnteHandler(app.accountKeeper, app.feeCollectionKeeper))
 
 	// The app.Router is the main transaction router where each module registers its routes
 	// Register the bank and nameservice routes here
