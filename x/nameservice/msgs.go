@@ -77,7 +77,7 @@ func (msg MsgBuyName) Route() string { return "nameservice" }
 func (msg MsgBuyName) Type() string { return "buy_name" }
 
 // validateBasic runs stateless checks on the message
-func (msg MsgBuyName) validateBasic() sdk.Error {
+func (msg MsgBuyName) ValidateBasic() sdk.Error {
 	if msg.Buyer.Empty() {
 		return sdk.ErrInvalidAddress(msg.Buyer.String())
 	}
