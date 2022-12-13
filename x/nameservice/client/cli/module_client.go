@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/cosmos/cosmos-sdk/client"
-	nameservicecmd "github.com/wns-link/nameservice/x/nameserver/client/cli"
+	nameservicecmd "github.com/wns-link/nameservice/x/nameservice/client/cli"
 
 	"github.com/spf13/cobra"
 	amino "github.com/tendermint/go-amino"
