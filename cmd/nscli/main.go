@@ -20,7 +20,7 @@ import (
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/client/rest"
 	app "github.com/wns-link/nameservice"
-	nsclient "github.com/wns-link/nameservice/x/nameservice/client"
+	nsclient "github.com/wns-link/nameservice/x/nameservice/client/cli"
 	nsrest "github.com/wns-link/nameservice/x/nameservice/client/rest"
 )
 
