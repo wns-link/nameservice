@@ -49,7 +49,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:   "nscli",
-		short: "nameservice Client",
+		Short: "nameservice Client",
 	}
 
 	// Add --chain-id to presistent flags and mark it required
@@ -67,7 +67,7 @@ func main() {
 		client.LineBreak,
 		lcd.ServeCommand(cdc, registerRoutes),
 		client.LineBreak,
-		keys.Command(),
+		keys.Commands(),
 		client.LineBreak,
 	)
 
@@ -96,7 +96,7 @@ func queryCmd(cdc *amino.Codec, mc []sdk.ModuleClients) *cobra.Command {
 
 	queryCmd.AddCommand(
 		rpc.ValidatorCommand(cdc),
-		rpc.BlockCommand(cdc),
+		rpc.BlockCommand(),
 		tx.SearchTxCmd(cdc),
 		tx.QueryTxCmd(cdc),
 		client.LineBreak,
