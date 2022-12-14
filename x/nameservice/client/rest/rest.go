@@ -34,7 +34,7 @@ func resolveNameHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName s
 		res, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/resolve/%s", storeName, paramType), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
-			return 
+			return
 		}
 
 		rest.PostProcessResponse(w, cdc, res, cliCtx.Indent)
@@ -49,13 +49,12 @@ func whoIsHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string)
 		res, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/whois/%s", storeName, paramType), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
-			return 
+			return
 		}
 
 		rest.PostProcessResponse(w, cdc, res, cliCtx.Indent)
 	}
 }
-
 
 func namesHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -68,12 +67,11 @@ func namesHandler(cdc *codec.Codec, cliCtx context.CLIContext, storeName string)
 	}
 }
 
-
 type buyNameReq struct {
-	BaseReq	rest.BaseReq	`json:"base_req"`
-	Name 	string 			`json:"name"`
-	Amount	string 			`json:"amount"`
-	Buyer   string 			`json:"buyer"`
+	BaseReq rest.BaseReq `json:"base_req"`
+	Name    string       `json:"name"`
+	Amount  string       `json:"amount"`
+	Buyer   string       `json:"buyer"`
 }
 
 func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFunc {
@@ -81,7 +79,7 @@ func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFun
 		var req buyNameReq
 		if !rest.ReadRESTReq(w, r, cdc, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
-			return 
+			return
 		}
 
 		baseReq := req.BaseReq.Sanitize()
@@ -92,7 +90,12 @@ func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFun
 		addr, err := sdk.AccAddressFromBech32(req.Buyer)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
-			return 
+			return
+		}
+
+		coins, err := sdk.ParseCoins(req.Amount)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 		}
 
 		// Create the message
@@ -105,4 +108,43 @@ func buyNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFun
 
 		clientrest.WriteGenerateStdTxResponse(w, cdc, cliCtx, baseReq, []sdk.Msg{msg})
 	}
+}
+
+type setNameReq struct {
+	BaseReq rest.BaseReq `json:"base_req"`
+	Name    string       `json:"name"`
+	Value   string       `json:"value"`
+	Owner   string       `json:"owner"`
+}
+
+func setNameHandler(cdc *codec.Codec, cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req setNameReq
+		if !rest.ReadRESTReq(w, r, cdc, &req) {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
+			return
+		}
+
+		baseReq := req.BaseReq.Sanitize()
+		if !baseReq.ValidateBasic(w) {
+			return
+		}
+
+		addr, err := sdk.AccAddressFromBech32(req.Owner)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		// Create the message
+		msg := nameservice.NewMsgSetName(req.Name, req.Value, addr)
+		err = msg.ValidateBasic()
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		clientrest.WriteGenerateStdTxResponse(w, cdc, cliCtx, baseReq, []sdk.Msg{msg})
+	}
+
 }
