@@ -48,7 +48,7 @@ func main() {
 	}
 
 	rootCmd := &cobra.Command{
-		Use: "nscli",
+		Use:   "nscli",
 		short: "nameservice Client",
 	}
 
@@ -89,9 +89,9 @@ func registerRoutes(rs *lcd.RestServer) {
 
 func queryCmd(cdc *amino.Codec, mc []sdk.ModuleClients) *cobra.Command {
 	queryCmd := &cobra.Command{
-		Use: "query",
+		Use:     "query",
 		Aliases: []string{"q"},
-		Short: "Querying subcommands",
+		Short:   "Querying subcommands",
 	}
 
 	queryCmd.AddCommand(
@@ -117,8 +117,8 @@ func txCmd(cdc *amino.Codec, mc []sdk.ModuleClients) *cobra.Command {
 	}
 
 	txCmd.AddCommand(
-		bankcmd.SendTxCmd(cdc)
-		client.LineBreak
+		bankcmd.SendTxCmd(cdc),
+		client.LineBreak,
 		authcmd.GetSignCommand(cdc),
 		tx.GetBroadcastCommand(cdc),
 		client.LineBreak,
